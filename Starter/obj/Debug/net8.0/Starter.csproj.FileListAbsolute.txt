@@ -1,0 +1,14 @@
+C:\Users\firatg\Desktop\GuidedProject\Starter\bin\Debug\net8.0\Starter.exe
+C:\Users\firatg\Desktop\GuidedProject\Starter\bin\Debug\net8.0\Starter.deps.json
+C:\Users\firatg\Desktop\GuidedProject\Starter\bin\Debug\net8.0\Starter.runtimeconfig.json
+C:\Users\firatg\Desktop\GuidedProject\Starter\bin\Debug\net8.0\Starter.dll
+C:\Users\firatg\Desktop\GuidedProject\Starter\bin\Debug\net8.0\Starter.pdb
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\Starter.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\Starter.AssemblyInfoInputs.cache
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\Starter.AssemblyInfo.cs
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\Starter.csproj.CoreCompileInputs.cache
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\Starter.dll
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\refint\Starter.dll
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\Starter.pdb
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\Starter.genruntimeconfig.cache
+C:\Users\firatg\Desktop\GuidedProject\Starter\obj\Debug\net8.0\ref\Starter.dll
