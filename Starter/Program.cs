@@ -385,6 +385,7 @@ do
                     } while (validEntry == false);
                     ourAnimals[i, 3] = "Nickname: " + animalNickname.ToString();
                 }
+                
                 // checks if ID is valid and personality is empty ?
                 if (ourAnimals[i, 5] == "Personality: " && ourAnimals[i, 0] != "ID #: ")
                 {
