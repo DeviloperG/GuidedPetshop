@@ -14,14 +14,14 @@ public static class Program
     private static string _menuSelection = "";
 
 // array used to store runtime data, there is no persisted data
-    private static string[,] _ourAnimals = new string[MaxPets, 6];
 
     private static List<Animal> _ourAnimalsList = new();
+
     public static void Main()
     {
-        SeedData(_ourAnimals);
-        SeedDataList();
         
+        SeedDataList();
+
         do
         {
             // display the top-level menu options
@@ -34,22 +34,22 @@ public static class Program
                 case "1":
                 {
                     //list all current pet information
-                    PrintArray(_ourAnimals);
                     
-                    Console.WriteLine("PrintList() Runs");
                     PrintList();
                     break;
                 }
 
                 case "2":
                 {
-                    CreateNewPet(_ourAnimals);
+                   
+                    CreateNewPetObject();
                     break;
                 }
 
                 case "3":
                 {
-                    EnsureAgeAndPhysicalConditionIsFilled(_ourAnimals);
+                   
+                    EnsureAgeAndPhysicalConditionIsFilledObj();
                     Console.WriteLine(
                         "\n\rAge and physical condition fields are complete for all of our friends. \n\rPress the Enter key to continue");
                     readResult = Console.ReadLine();
@@ -58,7 +58,8 @@ public static class Program
 
                 case "4":
                 {
-                    EnsureNicknameAndPersonalityIsFilled(_ourAnimals);
+                    
+                    EnsureNicknameAndPersonalityIsFilledObj();
 
                     Console.WriteLine(
                         "\n\rNickname and personality fields are complete for all of our friends. \n\rPress the Enter key to continue");
@@ -103,82 +104,7 @@ public static class Program
     }
 
 
-    private static void SeedData(string[,] animalArray)
-    {
-        for (int i = 0; i < MaxPets; i++)
-        {
-            string animalSpecies;
-            switch (i)
-            {
-                case 0:
-                {
-                    animalSpecies = "dog";
-                    _animalId = "d1";
-                    _animalAge = "2";
-                    _animalPhysicalDescription =
-                        "medium sized cream colored female golden retriever weighing about 65 pounds. housebroken.";
-                    _animalPersonalityDescription =
-                        "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.";
-                    _animalNickname = "lola";
-                    break;
-                }
-
-                case 1:
-                {
-                    animalSpecies = "dog";
-                    _animalId = "d2";
-                    _animalAge = "?";
-                    _animalPhysicalDescription =
-                        "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.";
-                    _animalPersonalityDescription =
-                        "loves to have his ears rubbed when he greets you at the door, or at any time! loves to lean-in and give doggy hugs.";
-                    _animalNickname = "loki";
-                    break;
-                }
-
-                case 2:
-                {
-                    animalSpecies = "cat";
-                    _animalId = "c3";
-                    _animalAge = "1";
-                    _animalPhysicalDescription = "small white female weighing about 8 pounds. litter box trained.";
-                    _animalPersonalityDescription = "friendly";
-                    _animalNickname = "Puss";
-                    break;
-                }
-
-                case 3:
-                {
-                    animalSpecies = "cat";
-                    _animalId = "c4";
-                    _animalAge = "21";
-                    _animalPhysicalDescription = "";
-                    _animalPersonalityDescription = "";
-                    _animalNickname = "";
-                    break;
-                }
-
-
-                default:
-                {
-                    animalSpecies = "";
-                    _animalId = "";
-                    _animalAge = "";
-                    _animalPhysicalDescription = "";
-                    _animalPersonalityDescription = "";
-                    _animalNickname = "";
-                    break;
-                }
-            }
-
-            animalArray[i, 0] = $"ID #: {_animalId}";
-            animalArray[i, 1] = $"Species: {animalSpecies}";
-            animalArray[i, 2] = $"Age: {_animalAge}";
-            animalArray[i, 3] = $"Nickname: {_animalNickname}";
-            animalArray[i, 4] = $"Physical description: {_animalPhysicalDescription}";
-            animalArray[i, 5] = $"Personality: {_animalPersonalityDescription}";
-        }
-    }
+  
 
     private static string? GetUserInput()
     {
@@ -211,36 +137,18 @@ public static class Program
         return readResult;
     }
 
-    private static void PrintArray(string[,] array)
-    {
-        int xDimension = array.GetLength(0);
-        int yDimension = array.GetLength(1);
 
 
-        for (int i = 0; i < xDimension; i++)
-        {
-            Console.WriteLine(); //Creates a line break to make output easy to read
-            if (array[i, 0] != "ID #: ")
-            {
-                for (int j = 0; j < yDimension; j++)
-                {
-                    Console.WriteLine(array[i, j]);
-                }
-            }
-        }
-    }
-    
     private static void PrintList()
     {
         foreach (var animal in _ourAnimalsList)
         {
             if (!string.IsNullOrEmpty(animal.Id))
-                Console.WriteLine($"ID:{animal.Id}\n Age:{animal.Age}\n Nickname: {animal.Nickname}\n Personality: {animal.Personality}\n Physical Description: {animal.PhysicalDesc}\n\n");
+                Console.WriteLine(
+                    $"ID:{animal.Id}\n Age:{animal.Age}\n Species: {animal.Species}\n Nickname: {animal.Nickname}\n Personality: {animal.Personality}\n Physical Description: {animal.PhysicalDesc}\n\n");
         }
     }
-    
-    
-    
+
 
     private static int CountPets(string[,] array)
     {
@@ -335,181 +243,12 @@ public static class Program
         }
     }
 
-    private static void CreateNewPet(string[,] animalArray)
-    {
-        int petCount = CountPets(animalArray);
-
-
-        PrintCapacityStatistics(petCount);
-
-        while (petCount < MaxPets)
-        {
-            // get species (cat or dog) - string animalSpecies is a required field 
-            //// method here 3
-            Species species = InputCatOrDog();
-
-            // builds the animal the ID number
-            _animalId = species.ToString().Substring(0, 1) + (petCount + 1);
-
-            //get pets age or ? 
-
-            bool ageIsKnown = TryGetPetAge(out int age);
-
-            string physicalDescription =
-                GetUserString(
-                    "\"Enter a physical description of the pet (size, color, gender, weight, housebroken)\"");
-
-            string personalityDescription =
-                GetUserString(
-                    "Enter a description of the pet's personality (likes or dislikes, tricks, energy level)");
-            string nickname = GetUserString("Enter a nickname for the pet");
-
-
-            // store the pet information in the ourAnimals array
-            animalArray[petCount, 0] = $"ID #: {_animalId}";
-            animalArray[petCount, 1] = $"Species: {species}";
-            animalArray[petCount, 2] = $"Age: {(ageIsKnown ? age : "?")}";
-            animalArray[petCount, 3] = $"Nickname: {nickname}";
-            animalArray[petCount, 4] = $"Physical description: {physicalDescription}";
-            animalArray[petCount, 5] = $"Personality: {personalityDescription}";
-
-            petCount++;
-
-            if (petCount < MaxPets)
-            {
-                if (!AskYesNoQuestion("Do you want to enter info for another pet?"))
-                {
-                    break;
-                }
-            }
-
-            if (petCount >= MaxPets)
-            {
-                Console.WriteLine("We have reached our limit on the number of pets that we can manage.");
-                Console.WriteLine("Press the Enter key to continue.");
-                Console.ReadLine();
-            }
-        }
-    }
-
-    private static void EnsureAgeAndPhysicalConditionIsFilled(string[,] animalArray)
-    {
-        for (int i = 0; i < MaxPets; i++)
-        {
-            if (animalArray[i, 0] == "ID #: ") continue;
-
-            EnsureAgeIsFilled(animalArray, i);
-
-            EnsurePhysicalConditionIsFilled(animalArray, i);
-        }
-    }
-
-    private static void EnsureAgeIsFilled(string[,] animalArray, int animalNumber)
-    {
-        if (animalArray[animalNumber, (int)AnimalProperty.Age] == "Age: ?")
-        {
-            while (true)
-            {
-                Console.WriteLine($"Enter an age for {animalArray[animalNumber, 0]}");
-                string? userInput = Console.ReadLine();
-
-                if (!string.IsNullOrWhiteSpace(userInput))
-                {
-                    bool success = int.TryParse(userInput, out int petAge);
-                    if (success)
-                    {
-                        animalArray[animalNumber, 2] = $"Age: {petAge}";
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    private static void EnsurePhysicalConditionIsFilled(string[,] animalArray, int animalNumber)
-    {
-        if (animalArray[animalNumber, (int)AnimalProperty.PhysicalCondition] == "Physical description: ")
-        {
-            while (true)
-            {
-                Console.WriteLine(
-                    $"Enter a physical description for {animalArray[animalNumber, 0]} (size, color, gender, weight, housebroken)");
-                string? userInput = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(userInput))
-                {
-                    if (!string.IsNullOrEmpty(userInput))
-                    {
-                        animalArray[animalNumber, (int)AnimalProperty.PhysicalCondition] =
-                            $"Physical description: {userInput.ToLower()}";
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    private static void EnsureNicknameAndPersonalityIsFilled(string[,] animalArray)
-    {
-        for (int i = 0; i < MaxPets; i++)
-        {
-            if (animalArray[i, 0] == "ID #: ") continue;
-
-            EnsureNicknameConditionIsFilled(animalArray, i);
-
-            EnsurePersonalityConditionIsFilled(animalArray, i);
-        }
-    }
-
-    private static void EnsureNicknameConditionIsFilled(string[,] animalArray, int animalNumber)
-    {
-        if (animalArray[animalNumber, (int)AnimalProperty.Nickname] == "Nickname: " ||
-            animalArray[animalNumber, (int)AnimalProperty.Nickname] == "Nickname: tbd")
-        {
-            while (true)
-            {
-                Console.WriteLine(
-                    $"Enter a nickname for {animalArray[animalNumber, 0]}");
-                string? userInput = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(userInput))
-                {
-                    if (!string.IsNullOrEmpty(userInput))
-                    {
-                        animalArray[animalNumber, (int)AnimalProperty.Nickname] = $"Nickname: {userInput.ToLower()}";
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    private static void EnsurePersonalityConditionIsFilled(string[,] animalArray, int animalNumber)
-    {
-        if (animalArray[animalNumber, (int)AnimalProperty.Personality] == "Personality: " ||
-            animalArray[animalNumber, (int)AnimalProperty.Personality] == "Personality: tbd")
-        {
-            while (true)
-            {
-                Console.WriteLine(
-                    $"Enter a personality description for {animalArray[animalNumber, 0]}");
-                string? userInput = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(userInput))
-                {
-                    if (!string.IsNullOrEmpty(userInput))
-                    {
-                        animalArray[animalNumber, (int)AnimalProperty.Personality] =
-                            $"Personality: {userInput.ToLower()}";
-                        return;
-                    }
-                }
-            }
-        }
-    }
     private static void SeedDataList()
     {
-        for (int i = 0; i < MaxPets; i++)
+        for (int i = 0; i < 6; i++)
         {
             string animalSpecies;
-            
+
             switch (i)
             {
                 case 0:
@@ -520,9 +259,10 @@ public static class Program
                         Species = Species.Dog,
                         Nickname = "lola",
                         Age = 2,
-                        Personality = "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.",
-                        PhysicalDesc = "medium sized cream colored female golden retriever weighing about 65 pounds. housebroken."
-                        
+                        Personality =
+                            "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.",
+                        PhysicalDesc =
+                            "medium sized cream colored female golden retriever weighing about 65 pounds. housebroken."
                     };
                     _ourAnimalsList.Add(animal1);
                     break;
@@ -559,7 +299,7 @@ public static class Program
                             "small white female weighing about 8 pounds. litter box trained."
                     };
                     _ourAnimalsList.Add(animal3);
-                    
+
                     break;
                 }
 
@@ -577,8 +317,8 @@ public static class Program
                             null
                     };
                     _ourAnimalsList.Add(animal4);
-                    
-                    
+
+
                     break;
                 }
 
@@ -598,6 +338,194 @@ public static class Program
                     };
                     _ourAnimalsList.Add(animal5);
                     break;
+                }
+            }
+        }
+    }
+
+    private static void CreateNewPetObject()
+    {
+        int petCount = _ourAnimalsList.Count;
+        Console.WriteLine(petCount);
+
+        PrintListCapacityStatistics(petCount);
+
+        while (petCount < MaxPets)
+        {
+            // get species (cat or dog) - string animalSpecies is a required field 
+            //// method here 3
+            Species species = InputCatOrDog();
+
+            // builds the animal the ID number
+            _animalId = species.ToString().Substring(0, 1) + (petCount + 1);
+
+            //get pets age or ? 
+
+            bool ageIsKnown = TryGetPetAge(out int age);
+
+            string physicalDescription =
+                GetUserStringObj(
+                    "\"Enter a physical description of the pet (size, color, gender, weight, housebroken)\"");
+
+            string personalityDescription =
+                GetUserStringObj(
+                    "Enter a description of the pet's personality (likes or dislikes, tricks, energy level)");
+            string nickname = GetUserStringObj("Enter a nickname for the pet");
+
+
+            Animal newAnimal = new()
+            {
+                Id = _animalId,
+                Species = species,
+                Nickname = nickname,
+                Age = (ageIsKnown ? age : null),
+                Personality =
+                    personalityDescription,
+                PhysicalDesc =
+                    physicalDescription
+            };
+            _ourAnimalsList.Add(newAnimal);
+
+
+            petCount++;
+
+            if (petCount < MaxPets)
+            {
+                if (!AskYesNoQuestion("Do you want to enter info for another pet?"))
+                {
+                    break;
+                }
+            }
+
+            if (petCount >= MaxPets)
+            {
+                Console.WriteLine("We have reached our limit on the number of pets that we can manage.");
+                Console.WriteLine("Press the Enter key to continue.");
+                Console.ReadLine();
+            }
+        }
+    }
+
+    private static void PrintListCapacityStatistics(int petCount)
+    {
+        if (petCount < MaxPets)
+        {
+            Console.WriteLine(
+                $"We currently have {petCount} pets that need homes. We have space for {(MaxPets - petCount)} more");
+        }
+    }
+
+    private static string GetUserStringObj(string message, string? defaultVal = null)
+    {
+        Console.WriteLine(message);
+        string? readResult = Console.ReadLine();
+
+        return readResult != " " ? readResult : defaultVal;
+    }
+
+    private static void EnsureAgeAndPhysicalConditionIsFilledObj()
+    {
+        foreach (var animal in _ourAnimalsList)
+        {
+            if (string.IsNullOrEmpty(animal.Id)) continue;
+
+            EnsureAgeIsFilledObj(animal);
+            EnsurePhysicalConditionIsFilledObj(animal);
+        }
+    }
+
+    private static void EnsureAgeIsFilledObj(Animal animal)
+    {
+        if (animal.Age is null or 0)
+        {
+            while (true)
+            {
+                Console.WriteLine($"Enter an age for {animal.Id}");
+                string? userInput = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(userInput))
+                {
+                    bool success = int.TryParse(userInput, out int petAge);
+                    if (success)
+                    {
+                        animal.Age = petAge;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private static void EnsurePhysicalConditionIsFilledObj(Animal animal)
+    {
+        if (string.IsNullOrEmpty(animal.PhysicalDesc))
+        {
+            while (true)
+            {
+                Console.WriteLine(
+                    $"Enter a physical description for {animal.Id} (size, color, gender, weight, housebroken)");
+                string? userInput = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(userInput))
+                {
+                    if (!string.IsNullOrEmpty(userInput))
+                    {
+                        animal.PhysicalDesc = userInput.ToLower();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private static void EnsureNicknameAndPersonalityIsFilledObj()
+    {
+        foreach (var animal in _ourAnimalsList)
+        {
+            if (string.IsNullOrEmpty(animal.Id)) continue;
+
+            EnsureNicknameConditionIsFilledObj(animal);
+            EnsurePersonalityConditionIsFilledObj(animal);
+            ;
+        }
+    }
+
+    private static void EnsureNicknameConditionIsFilledObj(Animal animal)
+    {
+        if (string.IsNullOrEmpty(animal.Nickname))
+        {
+            while (true)
+            {
+                Console.WriteLine(
+                    $"Enter a nickname for {animal.Id}");
+                string? userInput = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(userInput))
+                {
+                    if (!string.IsNullOrEmpty(userInput))
+                    {
+                        animal.Nickname = userInput.ToLower();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private static void EnsurePersonalityConditionIsFilledObj(Animal animal)
+    {
+        if (string.IsNullOrEmpty(animal.Personality))
+        {
+            while (true)
+            {
+                Console.WriteLine(
+                    $"Enter a personality description for {animal.Id}");
+                string? userInput = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(userInput))
+                {
+                    if (!string.IsNullOrEmpty(userInput))
+                    {
+                        animal.Personality = userInput.ToLower();
+                        return;
+                    }
                 }
             }
         }
